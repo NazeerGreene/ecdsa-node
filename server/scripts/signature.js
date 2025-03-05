@@ -1,6 +1,6 @@
 import { sign, etc } from '@noble/secp256k1';
-import { createHmac, hash } from 'crypto'; 
-import { toHex, utf8ToBytes, hexToBytes } from "ethereum-cryptography/utils";
+import { createHmac } from 'crypto'; 
+import { utf8ToBytes } from "ethereum-cryptography/utils";
 import { sha256 } from "ethereum-cryptography/sha256";
 
 
@@ -33,7 +33,7 @@ const recipientPublicAddress = '04500e365dc11b2e1337ba38c4fe709bb26284f57931a4e2
 const amount = 50;
 
 const message = {
-    from: senderPublicKey,
+    //from: senderPublicKey,
     to: recipientPublicAddress,
     amount
 }
@@ -41,14 +41,13 @@ const message = {
 const messageHash = hashMessage(message);
 
 const signature = signMessage(messageHash);
+const recovery = signature.recovery;
+
 
 const mail = {
     message,
-    signature: {
-        r: signature.r,
-        s: signature.s,
-        recovery: signature.recovery
-    }
+    signature: signature.toCompactHex(),
+    recovery
 }
 
 console.log('TO SERVER\n%o', mail);

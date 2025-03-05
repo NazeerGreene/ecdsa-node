@@ -1,6 +1,5 @@
-import { sign, etc, verify, Signature } from '@noble/secp256k1';
-import { createHmac, hash } from 'crypto'; 
-import { toHex, utf8ToBytes, hexToBytes } from "ethereum-cryptography/utils";
+import { verify, Signature } from '@noble/secp256k1';
+import { utf8ToBytes, hexToBytes } from "ethereum-cryptography/utils";
 import { sha256 } from "ethereum-cryptography/sha256";
 
 
@@ -15,22 +14,19 @@ function hashMessage(jsonMessage) {
 // received
 const received = {
     message: {
-      from: '04adc20f3c89775289d6d87b495fe8f5f5206d81f9dda2f45c1bb7782c1bc894a97d9650f27aa1922e69fffada14fa888a874305e282c09c8ebea72df1fdf0443b',
       to: '04500e365dc11b2e1337ba38c4fe709bb26284f57931a4e2f2d92bf625e384f3948cd2fc8058f8725660a0e8d65bf4eaa8486066aa7bb63114520a448071e93af7',
       amount: 50
     },
-    signature: {
-      r: 9411049478829602566571699285751736446746076947286793816509051703469320062705n,
-      s: 21848311561810395132890180538746262263263927446097629740517032409444823846351n,
-      recovery: 0
-    }
+    signature: 'd5594e93b873905cd1f2f27c1313212998cba57f89fbb4fef1ecf5707654b7f74a5c6728d89c0708c3abda42158a830ab08626a80045244e3307e75257b1a671',
+    recovery: 1
 };
-
 
 // verify
 
 const messageHash = hashMessage(received.message);
-const signature = new Signature(received.signature.r, received.signature.s, received.signature.recovery);
+const signature = Signature.fromCompact(hexToBytes(received.signature)).addRecoveryBit(received.recovery);
+
+
 
 const pubKey = signature.recoverPublicKey(messageHash);
 
