@@ -3,6 +3,7 @@ import { createHmac } from 'crypto';
 import { utf8ToBytes } from "ethereum-cryptography/utils";
 import { sha256 } from "ethereum-cryptography/sha256";
 
+// used to create and sign a transaction to be sent to the blockchain/server
 
 // ✅ Set HMAC-SHA256 implementation (needed for signing)
 etc.hmacSha256Sync = (key, ...msgs) => {
@@ -27,27 +28,23 @@ function signMessage(messageHash) {
 
 // initialize
 
-const senderPrivateKey = '6af12b1114892784fe3c51b3859daf31fd2eefc06429df995679f7928368deca';
-const senderPublicKey = '04adc20f3c89775289d6d87b495fe8f5f5206d81f9dda2f45c1bb7782c1bc894a97d9650f27aa1922e69fffada14fa888a874305e282c09c8ebea72df1fdf0443b';
-const recipientPublicAddress = '04500e365dc11b2e1337ba38c4fe709bb26284f57931a4e2f2d92bf625e384f3948cd2fc8058f8725660a0e8d65bf4eaa8486066aa7bb63114520a448071e93af7';
-const amount = 50;
+const senderPrivateKey = 'cfaf56e3b647b83af8ab7c6902f54eecf98f9c037c836a56ea5db1e04a5c337f';
+const recipientPublicAddress = '04cc38ebfd72cea1c801400215cde6226eb86b63328e684216cc7e8dae9530d23733e9cc1cfb2cd3aa9e3d1f534a689833ccd74a59251f70cb7f9891e3b31d4257';
+const amount = 10;
 
-const message = {
-    //from: senderPublicKey,
+const transaction = {
     to: recipientPublicAddress,
     amount
 }
 
-const messageHash = hashMessage(message);
-
-const signature = signMessage(messageHash);
+const transactionHash = hashMessage(transaction);
+const signature = signMessage(transactionHash);
 const recovery = signature.recovery;
 
 
-const mail = {
-    message,
-    signature: signature.toCompactHex(),
-    recovery
+const message = {
+    transaction,
+    signature: `${signature.toCompactHex()}+${recovery}`
 }
 
-console.log('TO SERVER\n%o', mail);
+console.log('TO SERVER\n%o', message);
