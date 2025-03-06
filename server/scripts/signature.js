@@ -30,7 +30,7 @@ function signMessage(messageHash) {
 
 const senderPrivateKey = 'cfaf56e3b647b83af8ab7c6902f54eecf98f9c037c836a56ea5db1e04a5c337f';
 const recipientPublicAddress = '04cc38ebfd72cea1c801400215cde6226eb86b63328e684216cc7e8dae9530d23733e9cc1cfb2cd3aa9e3d1f534a689833ccd74a59251f70cb7f9891e3b31d4257';
-const amount = 10;
+const amount = 20;
 
 const transaction = {
     to: recipientPublicAddress,
